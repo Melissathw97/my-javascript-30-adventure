@@ -184,6 +184,33 @@
     </li>
   </ul>
   <script>
+
+    // get all elements with attribute of data-time, then convert nodelist to array
+    const timeNodes = Array.from(document.querySelectorAll('[data-time]'));
+
+    const seconds = timeNodes
+      // map through each node to get the time 
+      .map(node => node.dataset.time)
+      // mapping through each time gets (5:30), split and destructure to get the mins and seconds, map through each to convert from string to floating point number
+      .map(timeCode => {
+        const [mins, secs] = timeCode.split(':').map(parseFloat);
+        // convert minutes and add up to get total seconds
+        return (mins * 60) + secs;
+      })
+      // add ALL times from the array of nodes
+      .reduce((total, seconds) => total + seconds)
+
+    // accumulated seconds
+    let secondsLeft = seconds;
+    // divide to get no of hours and the remainder seconds
+    const hours = Math.floor(secondsLeft / 3600);
+    secondsLeft = secondsLeft % 3600;
+
+    // from the remainder seconds, divide to get no of minutes
+    const minutes = Math.floor(secondsLeft / 60);
+    // from the remainder seconds, divide to get no of minutes
+    secondsLeft = secondsLeft % 60;
+
   </script>
 </body>
 
